@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : BaseActivity(0) {
     private val TAG = "HomeActivity"
@@ -16,7 +17,14 @@ class HomeActivity : BaseActivity(0) {
         bottomNavigation()
 
         mAuth = FirebaseAuth.getInstance()
-        mAuth.signOut()
+        sign_out.setOnClickListener {
+            mAuth.signOut()
+        }
+        mAuth.addAuthStateListener {
+            if (it.currentUser == null) {
+                startActivity(Intent(this, LoginActivity::class.java))
+            }
+        }
 
         /*auth.signInWithEmailAndPassword("m.v.serpak@gmail.com", "password")
             .addOnCompleteListener{
